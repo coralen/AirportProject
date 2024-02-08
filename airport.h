@@ -4,12 +4,13 @@
 #include "utilities.h"
 
 #define IATA 3
-#define MAX_LENGHT 100
+#define MAX_LENGTH 100
 
 typedef struct {
 	char name;
 	char country;
 	char code[IATA];
+    int countPlanes;
 } Airport;
 
 void getAttributes();
