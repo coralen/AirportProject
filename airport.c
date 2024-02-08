@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "airport.h"
+#include "../include/airport.h"
 
 char* getAirportName()
 {
 	char* name;
-	name = (char*)malloc(MAX_LENGHT * sizeof(char));
+	name = (char*)malloc(MAX_LENGTH * sizeof(char));
 
 }
 void getAttributes()
@@ -16,14 +16,19 @@ void getAttributes()
 
 void printAirport()
 {
+
 }
 
 int isSameAirport(Airport* airportPtr1, Airport* airportPtr2)
 {
-	return 1;
+    if (*(airportPtr1->code)==*(airportPtr2->code)) {
+        return 1;
+    }else return 0;
 }
 
 int isAirportCode(Airport* airportPtr, char code)
 {
-	return 1;
+	if (*(airportPtr->code)== code) {
+        return 1;
+    }else return 0;
 }
