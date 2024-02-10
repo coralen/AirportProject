@@ -1,8 +1,6 @@
 #ifndef _DATE_H
 #define _DATE_H
 
-#include "utilities.h"
-
 typedef struct
 {
 	int day;
@@ -10,8 +8,9 @@ typedef struct
 	int year;
 } Date;
 
-void getAttributes();
-void printDate();
-int validateDate();
+void initDate(Date* pDate);
+void getDate(const Date* pDate, int* day, int* month, int* year);
+void printDate(const Date pDate);
+int validateDate(const int day, const int month, const int year);
 
 #endif
