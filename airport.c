@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "../include/airport.h"
+#include "airport.h"
 
 
 int initAirport(Airport* pAirport)
