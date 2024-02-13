@@ -9,7 +9,7 @@
 int initAirline(Airline *pAirline)
 {
 	getAirlineName(pAirline);
-	if (!pAirline->airlineName) //allocation did not work
+	if (!pAirline->airlineName) // Allocation did not work
 		return 0;
 	pAirline->flightCount = 0;
 	pAirline->planeCount = 0;
@@ -18,13 +18,13 @@ int initAirline(Airline *pAirline)
 	return 1;
 }
 
-char* getAirlineName(Airline* pAirline)
+void getAirlineName(Airline* pAirline)
 {
 	char airlineName[MAX_STRING];
 	printf("Enter Airline name");
 	scanf("%s", &airlineName);
 	pAirline->airlineName = malloc(strlen(airlineName) + 1);
-	if (!pAirline->airlineName) return NULL;
+	if (!pAirline->airlineName) return;
 	strcpy(pAirline->airlineName, airlineName);
 }
 
@@ -38,9 +38,6 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 	initFlight(&pFlight);
 	getPlaneForFlight(pAirline, &pFlight);
 	getSrcAndDstForFlight(pAirportManager, &pFlight);
-
-	// Enter flight date
-	printf("Enter Flight Date dd##mm##yyyy  minimum year 2023");
 	initDate(&pFlight->date);
 
 	// Allocate memory and add new flight
@@ -202,5 +199,9 @@ void printPlanes(const Airline* pAirline)
 
 void freeAirline(Airline* pAirline)
 {
-	free(pAirline);
+	free(pAirline->airlineName);
+	for (int i = 0; i < pAirline->flightCount; i++)
+		freeFlight(pAirline->flights[i]);
+	for (int j = 0; j < pAirline->planeCount; j++)
+		freePlane(&pAirline->planes[j]);
 }

@@ -24,6 +24,7 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager);
 int addPlane(Airline* pAirline);
 int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager);
 int allocateFlight(Airline* pAirline, Flight* pFlight);
+void getAirlineName(Airline* pAirline);
 void doPrintFlightsWithPlaneType(Airline* pAirline); // in progress
 void getPlaneForFlight(const Airline* pAirline, Flight* pFlight);
 void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFlight);
