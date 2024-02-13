@@ -3,14 +3,28 @@
 
 #include "airline.h"
 #include "airportManager.h"
+#include "plane.h"
 #include "helper.h"
 
-void initAirline(Airline *pAirline)
+int initAirline(Airline *pAirline)
+{
+	getAirlineName(pAirline);
+	if (!pAirline->airlineName) //allocation did not work
+		return 0;
+	pAirline->flightCount = 0;
+	pAirline->planeCount = 0;
+	pAirline->flights = NULL;
+	pAirline->planes = NULL;
+	return 1;
+}
+
+char* getAirlineName(Airline* pAirline)
 {
 	char airlineName[MAX_STRING];
 	printf("Enter Airline name");
 	scanf("%s", &airlineName);
 	pAirline->airlineName = malloc(strlen(airlineName) + 1);
+	if (!pAirline->airlineName) return NULL;
 	strcpy(pAirline->airlineName, airlineName);
 }
 
@@ -39,6 +53,20 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 
 int addPlane(Airline* pAirline)
 {
+	Plane* pPlane;
+
+	initPlane(pPlane);
+	
+	pAirline->planeCount++;
+	pAirline->planes = realloc(pAirline->planes, pAirline->planeCount * sizeof(Plane));
+	if (!pAirline->planes)
+	{
+		pAirline->planeCount--;
+		freePlane(pPlane);
+		return 0;
+	}
+	pAirline->planes[pAirline->planeCount - 1] = *pPlane;
+
 	return 1;
 }
 
@@ -56,7 +84,7 @@ void doPrintFlightsWithPlaneType(Airline* pAirline)
 		*pPlane = pAirline->planes[i];
 		if (pPlane->planeType == planeType)
 		{
-			printf("");
+			printFlight(&pAirline->planes[i]);
 			found = 1;
 		}
 	}
@@ -64,22 +92,7 @@ void doPrintFlightsWithPlaneType(Airline* pAirline)
 	if (!found) printf("Sorry - could not find a flight with plane type %s\n", planeType);
 }
 
-void getPlaneType(char* planeType)
-{
-	int validFlag = 0, intPlaneType;
-	char* planeTypes[] = { "Commercial :", "Cargo :", "Military :" };
-
-	while (!validFlag)
-	{
-		printf("Please enter one of the following types\n0 for Commercial\n1 for Cargo\n2 for Military\n");
-		scanf("%d", &intPlaneType);
-		if (intPlaneType >= 0 && intPlaneType <= 2) validFlag = 1;
-	}
-
-	planeType = planeTypes[intPlaneType];
-}
-
-Plane* planeBySerialNumber(const Airline* pAirline, const int serielNumber, const int planeCount)
+Plane* findPlaneBySerialNumber(const Airline* pAirline, const int serielNumber, const int planeCount)
 {
 	for (int i = 0; i < planeCount; i++)
 		if (pAirline->planes[i].serielNumber == serielNumber) return &pAirline->planes[i];
@@ -89,17 +102,19 @@ Plane* planeBySerialNumber(const Airline* pAirline, const int serielNumber, cons
 void getPlaneForFlight(const Airline* pAirline, Flight* pFlight)
 {
 	int serielNumber, validSerial = 0;
+	Plane* pPlane;
 
+	init(pPlane);
 	printf("Choose a plane from list, type its serial Number\n");
 	printPlanes(pAirline, pAirline->planeCount);
 
-	//while (validSerial)
-	//{
-	//	scanf("%d", serielNumber);
-	//	pFlight->plane = *planeBySerialNumber(pAirline, serielNumber, pAirline->planeCount);
-	//	if()
-	//}
-	
+	while (validSerial)
+	{
+		scanf("%d", serielNumber);
+		pPlane = findPlaneBySerialNumber(pAirline, serielNumber, pAirline->planeCount);
+		if (pPlane != NULL) validSerial = 1;
+	}
+	pFlight->plane = *pPlane;
 	
 }
 
@@ -113,8 +128,8 @@ void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFligh
 	printf("Enter code of origin airport :");
 	while (validSrc)
 	{
-		scanf("%s", pFlight->sourceCode);
-		if (findAirportByCode(pAirportManager, pFlight->sourceCode) != NULL) validSrc = 1;
+		scanf("%s", pFlight->srcCode);
+		if (findAirportByCode(pAirportManager, pFlight->srcCode) != NULL) validSrc = 1;
 		else printf("No airport with this code - try again");
 	}
 
@@ -122,8 +137,8 @@ void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFligh
 	printf("Enter code of destination airport :");
 	while (validDst)
 	{
-		scanf("%d", pFlight->destCode);
-		if (findAirportByCode(pAirportManager, pFlight->destCode) != NULL) validDst = 1;
+		scanf("%d", pFlight->dstCode);
+		if (findAirportByCode(pAirportManager, pFlight->dstCode) != NULL) validDst = 1;
 		else printf("No airport with this code - try again");
 	}
 
@@ -148,7 +163,7 @@ int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager)
 
 int allocateFlight(Airline* pAirline, Flight* pFlight)
 {
-	pAirline->flights = realloc(pAirline->flights, pAirline->flightCount * sizeof(Flight*));
+	pAirline->flights = realloc(pAirline->flights, pAirline->flightCount * sizeof(Flight));
 	if (!pAirline->flights)
 	{
 		freeFlight(pFlight);
