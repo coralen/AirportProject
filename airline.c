@@ -143,7 +143,7 @@ void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFligh
 
 int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager)
 {
-	if (pAirportManager->airportCount < 2)
+	if (pAirportManager->airportCount < 2) //TODO: to change 2 to a variable
 	{
 		printf("There are not enough airport to set a flight\n");
 		return 0;
