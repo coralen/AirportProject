@@ -20,7 +20,6 @@ void initDate(Date* pDate)
 	pDate->year = year;
 }
 
-
 void getDate(int* day, int* month, int* year)
 {
 	char date[MAX_STRING];
@@ -39,12 +38,10 @@ void getDate(int* day, int* month, int* year)
 	}
 }
 
-
 void printDate(const Date pDate)
 {
 	printf("Date is %d-%d-%d\n", pDate.day, pDate.month, pDate.year);
 }
-
 
 int validateDate(const int day, const int month, const int year)
 {
