@@ -26,6 +26,7 @@ void getDate(int* day, int* month, int* year)
 	char date[MAX_STRING];
 	int count, validInputFlag = 0;
 
+	printf("Enter Flight Date dd##mm##yyyy  minimum year 2023");
 	while (!validInputFlag)
 	{
 		scanf("%s", &date);
@@ -57,5 +58,7 @@ int validateDate(const int day, const int month, const int year)
 
 void freeDate(Date* pDate)
 {
-	free(pDate);
+	free(pDate->day);
+	free(pDate->month);
+	free(pDate->year);
 }
