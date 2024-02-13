@@ -60,12 +60,15 @@ int isCodeValid(const char* code)
     return 1;
 }
 
-char* findAirportByCode(Airport* airports, char code)
+char* findAirportByCode(Airport* airports, char code) //finish the function with counter
 {
+    int countRightCode;
     for (int i=0; i< airports->countPlanes;i++) {
-        if (airports[i]->code[i] == code[i])
-            return &airports->code[i];
-    }
+        for (int j=0; j<IATA; j++){
+            if (airports[i]->code[j] != code[j])
+                
+        } return &airports[i]->code;
+    } 
 }
 
 
