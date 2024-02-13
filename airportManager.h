@@ -1,17 +1,20 @@
 #ifndef _AIRPORTMANAGER_H
 #define _AIRPORTMANAGER_H
 
+#include "../include/airport.h"
 #include "airport.h"
 #include "utilities.h"
 
 typedef struct {
-	Airport airports;
-	int amount;
+	Airport* airports;
+    int airportCount;
 } AirportManager;
 
-void getAttributes();
-void printAirportManager();
-void addAirport(char name, char country, char code[]);
-void findAirportByCode(char code);
+int addAirport(AirportManager* pAirportManager);
+int isCodeValid(const char* code);
+int initAirportManager(AirportManager* pAirportManager);
+void printAirportManager(AirportManager* pAirportManager);
+char* findAirportByCode(Airport* airports,char code);
+int freeAirportManagar(Airport* airport();
 
 #endif
