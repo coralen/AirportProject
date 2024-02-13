@@ -1,21 +1,38 @@
 #ifndef _AIRLINE_H
 #define _AIRLINE_H
 
+#include "airportManager.h"
 #include "flight.h"
 #include "plane.h"
-#include "utilities.h"
 
 typedef struct {
-	char name;
-	int amount;
-	Flight flights; //array
-	Plane planes; //array
+	char* airlineName;
+	int flightCount;
+	int planeCount;
+	Flight** flights;
+	Plane* planes;
 } Airline;
 
-void getAttributes();
-void printAirline();
-void addFlight(Flight flights);
-void addPlane(Plane* plane);
-void doPrintFlightsWithPlaneType(char planeType);
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "airline.h"
+#include "helper.h"
+
+void initAirline(Airline* pAirline);
+void doPrintFlightsWithPlaneType(Airline* pAirline);
+void getPlaneType(char* planeType);
+void getPlaneForFlight(const Airline* pAirline, Flight* pFlight);
+void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFlight);
+void printAirline(const Airline* pAirline);
+void printAirports(const AirportManager* pAirportManager);
+void printFlights(const Airline* pAirline);
+void printPlanes(const Airline* pAirline);
+int addFlight(Airline* pAirline, AirportManager* pAirportManager);
+int addPlane(Airline* pAirline);
+int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager);
+int allocateFlight(Airline* pAirline, Flight* pFlight);
+Plane* planeBySerialNumber(const Airline* pAirline, const int serielNumber, const int planeCount);
+
 
 #endif
