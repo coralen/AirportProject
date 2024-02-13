@@ -2,11 +2,14 @@
 #include <stdlib.h>
 
 #include "plane.h"
+#include "helper.h"
 
-void getAttributes()
+void initPlane()
 {
+	char planeType[MAX_STRING];
 }
 
-void printPlane()
+void printPlane(Plane* pPlane)
 {
+	printf("Plane: serial number:%d, type %s", pPlane->serielNumber, pPlane->planeType);
 }
