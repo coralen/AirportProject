@@ -9,7 +9,7 @@ typedef struct
 } Date;
 
 void initDate(Date* pDate);
-void getDate(const Date* pDate, int* day, int* month, int* year);
+void getDate(int* day, int* month, int* year);
 void printDate(const Date pDate);
 int validateDate(const int day, const int month, const int year);
 
