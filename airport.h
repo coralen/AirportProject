@@ -7,7 +7,7 @@
 #define MAX_LENGTH 100
 
 typedef struct {
-	char name[MAX_LENGTH];
+	char* name;
 	char country;
 	char code[IATA];
     int countPlanes;
