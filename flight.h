@@ -3,20 +3,22 @@
 
 #include "plane.h"
 #include "date.h"
-#include "utilities.h"
+
+#define CODE 3
 
 typedef struct
 {
-	char sourceCode;
-	char destCode;
-	Plane Plane;
+	char srcCode[3];
+	char dstCode[3];
+	Plane plane;
 	Date date;
 } Flight;
 
-void getAttributes();
-void printFlight();
-int isFlightFromSourceAirport();
-int isFlightToDestAirport();
-int isPlaneTypeInFlight();
+int initFlight(Flight* pFlight);
+int isFlightFromSourceAirport(Flight* pFlight, char* srcCode);
+int isFlightToDestAirport(Flight* pFlight, char* dstCode);
+int isPlaneTypeInFlight(Flight* pFlight, char* planeType);
+void printFlight(const Flight* pFlight);
+void freeFlight(Flight* pFlight);
 
 #endif
