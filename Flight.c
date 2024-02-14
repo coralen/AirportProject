@@ -46,3 +46,4 @@ void freeFlight(Flight* pFlight)
 	freePlane(&pFlight->plane);
 	freeDate(&pFlight->date);
 }
+
