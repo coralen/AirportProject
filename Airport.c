@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "Airport.h"
 #include "Helper.h"
@@ -30,58 +32,44 @@ void initAirport(Airport* pAirport)
 	strcpy(pAirport->country, country);
 }
 
+int isSameAirport(Airport* airportPtr1, Airport* airportPtr2)
+{
+	for (int i = 0; i < IATA; i++) {
+		if (airportPtr1->code[i] == airportPtr2->code[i])
+			return 0;
+	}return 1;
+}
 
-void printAirport(const Airport* pAirport)
+int isAirportCode(Airport* airportPtr, const char* code)
+{
+	for (int i = 0; i < IATA; i++) {
+		if (airportPtr->code[i] != code[i])
+			return 0;
+	}return 1;
+}
+
+void printAirport(Airport* pAirport)
 {
 	printf("Airport name:");
 	printWithUnderscores((const char*)pAirport->name);
+
 	printf("A                  Country: %s", pAirport->country);
+
 	printf("                 Code:%c%c%c", pAirport->code[0], pAirport->code[1], pAirport->code[2]);
-	printf("\n");
+
 }
-
-
 void printWithUnderscores(const char* input)
 {
-	while (*input != '\0') 
-	{
+	while (*input != '\0') {
 		printf("%c_", *input);
 		input++;
 	}
 	printf("\n");
 }
 
-
-int isSameAirport(const Airport* pAirport1, const Airport* pAirport2)
+/* In progress */
+void freeAirport() 
 {
-	for (int i = 0; i < IATA; i++) 
-		if (pAirport1->code[i] == pAirport2->code[i]) return 0;
-	return 1;
-}
+	
 
-
-int isAirportCode(const Airport* pAirport, const char* code)
-{
-	for (int i = 0; i < IATA; i++) 
-		if (pAirport->code[i] != code[i]) return 0;
-	return 1;
-}
-
-int isCodeValid(const char* code)
-{
-	if (strlen(code) != IATA) {
-		printf("Code should be 3 letters.\n");
-		return 0;
-	}
-
-	for (int i = 0; i < IATA; i++)
-	{
-		if (!isupper(code[i]))
-		{
-			printf("Need to be upper case letters.\n");
-			return 0;
-		}
-	}
-
-	return 1;
 }

@@ -10,6 +10,7 @@
 #define MIN_TYPE 0
 #define MAX_TYPE 2
 
+
 int initPlane(Plane* pPlane)
 {
 
@@ -24,7 +25,7 @@ void getSerialNumber(Plane* pPlane)
 {
 	do {
 		printf("Enter plane serial number - between 1 to 9999");
-		scanf("%d", &pPlane->serielNumber);
+		scanf("%d", pPlane->serielNumber);
 	} while (pPlane->serielNumber < MIN_SERIAL || pPlane->serielNumber > MAX_SERIAL);
 }
 

@@ -1,8 +1,7 @@
 #ifndef _PLANE_H
 #define _PLANE_H
 
-typedef struct
-{
+typedef struct {
 	char* planeType;
 	int serielNumber;
 } Plane;
