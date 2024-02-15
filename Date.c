@@ -9,38 +9,35 @@
 #define MIN_DAY 1
 #define MIN_MONTH 1
 #define MIN_YEAR 2022
+#define SEGMENTS 3
 
-void initDate(Date* pDate)
+void getCorrectDate(Date* pDate)
 {
-	int day, month, year;
+	char date[MAX_STRING];
+	int count, validInputFlag = 0, day = 0, month = 0, year = 0;
 
-	getDate(&day, &month, &year);
+	printf("Enter Flight Date dd##mm##yyyy  minimum year 2023");
+	while (!validInputFlag)
+	{
+		scanf("%s", date);
+		count = sscanf(date, "%2d##%2d##%4d", &day, &month, &year);
+
+		if (count != SEGMENTS || !validateDate(day, month, year)) {
+			printf("Error try again\n");
+			validInputFlag = 0;
+		}
+		else validInputFlag = 1;
+	}
+
 	pDate->day = day;
 	pDate->month = month;
 	pDate->year = year;
 }
 
-void getDate(int* day, int* month, int* year)
-{
-	char date[MAX_STRING];
-	int count, validInputFlag = 0;
 
-	printf("Enter Flight Date dd##mm##yyyy  minimum year 2023");
-	while (!validInputFlag)
-	{
-		scanf("%s", &date);
-		count = sscanf(date, "%2d##%2d##%4d", day, month, year);
-		
-		if (count != 3 || !validateDate(*day, *month, *year)) {
-			printf("Error try again\n");
-			validInputFlag = 0;
-		} else validInputFlag = 1;
-	}
-}
-
-void printDate(const Date pDate)
+void printDate(const Date* pdate)
 {
-	printf("Date is %d-%d-%d\n", pDate.day, pDate.month, pDate.year);
+	printf("Date is %d-%d-%d\n", pdate->day, pdate->month, pdate->year);
 }
 
 /* In progress */

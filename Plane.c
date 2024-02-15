@@ -11,45 +11,53 @@
 #define MAX_TYPE 2
 
 
-int initPlane(Plane* pPlane)
+int initPlane(Plane* pPlane, const Plane* planeArr, const int planeCount)
 {
+	do {
+		printf("Enter plane serial number - between 1 to 9999\n");
+		scanf("%d", &pPlane->serielNumber);
+	} while (pPlane->serielNumber < MIN_SERIAL || pPlane->serielNumber > MAX_SERIAL || isPlaneExist(pPlane, planeArr, planeCount));
 
-	getSerialNumber(pPlane);
 	getPlaneType(pPlane);
-	if (!pPlane->planeType) return 0; // Allocation did not work
+	if (!pPlane->type) return 0; // Allocation did not work
 	return 1;
+}
 
+int isPlaneExist(Plane* pPlane, const Plane* planeArr, const int planeCount)
+{
+	for (int i = 0; i < planeCount; i++)
+		if (planeArr[i].serielNumber == pPlane->serielNumber) return 1;
+	return 0;
 }
 
 void getSerialNumber(Plane* pPlane)
 {
 	do {
 		printf("Enter plane serial number - between 1 to 9999");
-		scanf("%d", pPlane->serielNumber);
+		scanf("%d", &pPlane->serielNumber);
 	} while (pPlane->serielNumber < MIN_SERIAL || pPlane->serielNumber > MAX_SERIAL);
 }
 
 void getPlaneType(Plane* pPlane)
 {
-	int planeType;
-	char* planeTypes[] = { "Commercial :", "Cargo :", "Military :" };
+	int choice;
 
 	do {
 		printf("Please enter one of the following types\n0 for Commercial\n1 for Cargo\n2 for Military\n");
-		scanf("%d", &planeType);
-	} while (planeType < MIN_TYPE || planeType > MAX_TYPE);
+		scanf("%d", &choice);
+	} while (choice < MIN_TYPE || choice > MAX_TYPE);
 
-	pPlane->planeType = realloc(pPlane->planeType, strlen(planeType) + 1);
-	if (!pPlane->planeType) return;
-	pPlane->planeType = planeTypes[planeType];
+	pPlane->type = malloc(sizeof(PlaneType));
+	if (!pPlane->type) return;
+	*(pPlane->type) = (PlaneType)choice;
 }
 
-void printPlane(Plane* pPlane)
+void printPlane(const Plane* pPlane)
 {
-	printf("Plane: serial number:%d, type %s", pPlane->serielNumber, pPlane->planeType);
+	printf("Plane: serial number:%d, type %s", pPlane->serielNumber, pPlane->type);
 }
 
 void freePlane(Plane* pPlane)
 {
-	free(pPlane->planeType);
+	free(pPlane);
 }

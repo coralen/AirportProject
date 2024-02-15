@@ -1,22 +1,22 @@
 #ifndef _FLIGHT_H
 #define _FLIGHT_H
 
+#include "Helper.h"
+#include "AirportManager.h"
 #include "Plane.h"
 #include "Date.h"
 
-#define CODE 3
-
 typedef struct {
-	char srcCode[3];
-	char dstCode[3];
+	char sCode[IATA + 1];
+	char dCode[IATA + 1];
 	Plane plane;
 	Date date;
 } Flight;
 
-void initFlight(Flight* pFlight, Plane* pPlane, const AirportManager* pManager);
-int isFlightFromSourceAirport(Flight* pFlight, char* srcCode);
-int isFlightToDestAirport(Flight* pFlight, char* dstCode);
-int isPlaneTypeInFlight(Flight* pFlight, char* planeType);
+int isFlightFromSourceAirport(const Flight* pFlight, const char* srcCode);
+int isFlightToDestAirport(const Flight* pFlight, const char* dstCode);
+int isPlaneTypeInFlight(const Flight* pFlight, const PlaneType type);
+void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAirportManager);
 void printFlight(const Flight* pFlight);
 void freeFlight(Flight* pFlight);
 

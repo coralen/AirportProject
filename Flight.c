@@ -4,46 +4,68 @@
 
 #include "Flight.h"
 #include "AirportManager.h"
+#include "Plane.h"
 
-/* In progress */
-void initFlight(Flight* pFlight, Plane* pPlane, const AirportManager* pAirportManager) 
+
+void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAirportManager) 
 {
+	int validSrc = 0, validDst = 0;
+
 	pFlight->plane = *pPlane;
-	// Move here the flight validation (now in airline), validation like source and destination.
+	printf("there are %d airports", pAirportManager->airportCount);
+	printAirportArr(pAirportManager);
+
+	// Select origin airport
+	printf("Enter code of origin airport :");
+	do {
+		scanf("%s", pFlight->sCode);
+		if (findAirportByCode(pAirportManager, pFlight->sCode) != NULL) validSrc = 1;
+		else printf("No airport with this code - try again");
+	} while (!validSrc);
+
+	// Select destination airport
+	do {
+		printf("Enter code of destination airport :");
+		scanf("%d", pFlight->dCode);
+		if (isFlightFromSourceAirport(pFlight, pFlight->dCode)) printf("Same origin and destination airport\n");
+		else {
+			if (findAirportByCode(pAirportManager, pFlight->dCode) != NULL) validDst = 1;
+			else printf("No airport with this code - try again");
+		}
+	} while (!validDst);
+
+	getCorrectDate(&pFlight->date);
+
 }
 
-
-int isFlightFromSourceAirport(Flight* pFlight, char* srcCode)
+int isFlightFromSourceAirport(const Flight* pFlight, const char* sCode)
 {
-	if (pFlight->srcCode == srcCode) return 1;
+	if (strcmp(pFlight->sCode ,sCode)) return 1;
 	return 0;
 }
 
-int isFlightToDestAirport(Flight* pFlight, char* dstCode)
+int isFlightToDestAirport(const Flight* pFlight, const char* dCode)
 {
-	if (pFlight->dstCode == dstCode) return 1;
+	if (strcmp(pFlight->dCode, dCode)) return 1;
 	return 0;
 }
 
-int isPlaneTypeInFlight(Flight* pFlight, char* planeType)
+int isPlaneTypeInFlight(const Flight* pFlight, const PlaneType type)
 {
-	if (pFlight->plane.planeType == planeType) return 1;
+	if (pFlight->plane.type == type) return 1;
 	return 0;
 }
 
-void printFlight(Flight* pFlight)
+void printFlight(const Flight* pFlight)
 {
-	printf("Flight From %s To %s  Date: ", pFlight->srcCode, pFlight->dstCode);
-	printDate(pFlight->date);
+	printf("Flight From %s To %s  Date: ", pFlight->sCode, pFlight->dCode);
+	printDate(&pFlight->date);
 	printPlane(&pFlight->plane);
 	printf("\n");
 }
 
 void freeFlight(Flight* pFlight)
 {
-	free(pFlight->srcCode);
-	free(pFlight->dstCode);
-	freePlane(&pFlight->plane);
-	freeDate(&pFlight->date);
+	free(pFlight);
 }
 

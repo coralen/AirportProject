@@ -4,7 +4,7 @@
 #include "Airport.h"
 
 typedef struct {
-	Airport** airports;
+	Airport** airportArr;
 	int airportCount;
 } AirportManager;
 
@@ -12,10 +12,10 @@ typedef struct {
 int initAirportManager(AirportManager* pAirportManager);
 int addAirport(AirportManager* pAirportManager);
 int isCodeValid(const char* code);
-int compareCodes(char* code1, char* code2, int len);
-void printAirportManager(AirportManager* pAirportManager);
+int isSameCode(const char* code1, const char* code2);
+void printAirportManager(const AirportManager* pAirportManager);
 void freeAirportManagar(AirportManager* pAirportManager);
-char* findAirportByCode(AirportManager* pAirportManager, char* code);
+Airport* findAirportByCode(const AirportManager* pAirportManager, const char* code);
 
 
 #endif

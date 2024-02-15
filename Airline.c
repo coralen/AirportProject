@@ -27,20 +27,21 @@ int initAirline(Airline *pAirline)
 
 int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 {
-	Flight* pFlight;
+	Flight* pFlight; 
+	Plane* pPlane;
 	int serielNumber;
 
 	if (!isPossibleFlight) return 0;
 
-	getPlaneForFlight(pAirline, &pFlight);
-	getSrcAndDstForFlight(pAirportManager, &pFlight);
-	initDate(&pFlight->date);
+	// Allocate memory and add a new flight
+	pAirline->flightArr = (Flight*)realloc(pAirline->flightArr, (pAirline->flightCount + 1) * sizeof(Flight));
+	if (!pAirline->flightArr) return 0;
 
-	// Allocate memory and add new flight
 	pAirline->flightCount++;
-	if (!allocateFlight(&pAirline, &pFlight)) return 0;
-	pAirline->flightArr[pAirline->flightCount - 1] = pFlight;
-	
+	pFlight = pAirline->flightArr[pAirline->flightCount - 1];
+	getPlaneForFlight(pAirline, &pPlane);
+	initFlight(&pFlight, pPlane, pAirportManager);
+
 	return 1;
 }
 
@@ -48,8 +49,8 @@ int addPlane(Airline* pAirline)
 {
 	Plane* pPlane = NULL;
 
-	initPlane(pPlane);
-	if (!comparePlanes(pAirline, pPlane)) return 0;
+	initPlane(pPlane, pAirline->planeArr, pAirline->planeCount);
+	if (isSamePlane(pAirline, pPlane)) return 0;
 
 	pAirline->planeCount++;
 	pAirline->planeArr = realloc(pAirline->planeArr, pAirline->planeCount * sizeof(Plane));
@@ -64,7 +65,7 @@ int addPlane(Airline* pAirline)
 	return 1;
 }
 
-int comparePlanes(const Airline* pAirline, const Plane* pPlane)
+int isSamePlane(const Airline* pAirline, const Plane* pPlane)
 {
 	for (int i = 0; i < pAirline->planeCount; i++)
 		if (pAirline->planeArr[i].serielNumber == pPlane->serielNumber) return 0;
@@ -73,22 +74,22 @@ int comparePlanes(const Airline* pAirline, const Plane* pPlane)
 
 void doPrintFlightsWithPlaneType(Airline* pAirline)
 {
-	char* planeType;
+	PlaneType type;
 	int found = 0;
 
-	getPlaneType(&planeType);
-	printf("Flights with plane type %s\n", planeType);
+	getPlaneType(&type);
+	printf("Flights with plane type %s\n", type);
 
-	for (int i = 0; i < pAirline->planeCount; i++)
+	for (int i = 0; i < pAirline->flightCount; i++)
 	{
-		if (pAirline->planeArr[i].planeType == planeType)
+		if (isPlaneTypeInFlight(pAirline->flightArr[i], type))
 		{
-			printFlight(&pAirline->planeArr[i]);
+			printFlight(&pAirline->flightArr[i]);
 			found = 1;
 		}
 	}
 
-	if (!found) printf("Sorry - could not find a flight with plane type %s\n", planeType);
+	if (!found) printf("Sorry - could not find a flight with plane type %s\n", type);
 }
 
 Plane* findPlaneBySerialNumber(const Airline* pAirline, const int serielNumber, const int planeCount)
@@ -98,42 +99,18 @@ Plane* findPlaneBySerialNumber(const Airline* pAirline, const int serielNumber, 
 	return NULL;
 }
 
-void getPlaneForFlight(const Airline* pAirline, Flight* pFlight)
+void getPlaneForFlight(const Airline* pAirline, Plane* pPlane)
 {
 	int serielNumber = 0;
 
 	printf("Choose a plane from list, type its serial Number\n");
-	printPlanesArr(pAirline, pAirline->planeCount);
+	printPlaneArr(pAirline, pAirline->planeCount);
 
 	do {
 		scanf("%d", serielNumber);
-		pFlight->plane = *findPlaneBySerialNumber(pAirline, serielNumber, pAirline->planeCount);
-	} while (&pFlight->plane == NULL);
+		pPlane = findPlaneBySerialNumber(pAirline, serielNumber, pAirline->planeCount);
+	} while (&pPlane == NULL);
 	
-}
-
-void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFlight)
-{
-	int validSrc = 0, validDst = 0;
-	printf("there are %d airports", pAirportManager->airportCount);
-	printAirportsArr(pAirportManager);
-
-	// Select origin airport
-	printf("Enter code of origin airport :");
-	do {
-		scanf("%s", pFlight->srcCode);
-		if (findAirportByCode(pAirportManager, pFlight->srcCode) != NULL) validSrc = 1;
-		else printf("No airport with this code - try again");
-	} while (!validSrc);
-
-	// Select destination airport
-	printf("Enter code of destination airport :");
-	do {
-		scanf("%d", pFlight->dstCode);
-		if (findAirportByCode(pAirportManager, pFlight->dstCode) != NULL) validDst = 1;
-		else printf("No airport with this code - try again");
-	} while (!validDst);
-
 }
 
 int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager)
@@ -153,40 +130,28 @@ int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager)
 	return 1;
 }
 
-int allocateFlight(Airline* pAirline, Flight* pFlight)
-{
-	pAirline->flightArr = realloc(pAirline->flightArr, pAirline->flightCount * sizeof(Flight));
-	if (!pAirline->flightArr)
-	{
-		freeFlight(pFlight);
-		pAirline->flightCount--;
-		return 0;
-	}
-	return 1;
-}
-
 void printAirline(const Airline* pAirline)
 {
 	printf("Airline %s\n", pAirline->name);
 	printf(" -------- Has %d planes", pAirline->planeCount);
-	printPlanesArr(pAirline);
+	printPlaneArr(pAirline);
 	printf(" -------- Has %d flights", pAirline->flightCount);
-	printFlightsArr(pAirline);
+	printFlightArr(pAirline);
 }
 
-void printAirportsArr(const AirportManager* pAirportManager)
+void printAirportArr(const AirportManager* pAirportManager)
 {
 	for (int i = 0; i < pAirportManager->airportCount; i++)
-		printAirport(pAirportManager->airports[i]);
+		printAirport(pAirportManager->airportArr[i]);
 }
 
-void printFlightsArr(const Airline* pAirline)
+void printFlightArr(const Airline* pAirline)
 {
 	for (int i = 0; i < pAirline->flightCount; i++)
 		printFlight(pAirline->flightArr[i]);
 }
 
-void printPlanesArr(const Airline* pAirline)
+void printPlaneArr(const Airline* pAirline)
 {
 	for (int i = 0; i < pAirline->planeCount; i++)
 		printPlane(&pAirline->planeArr[i]);
