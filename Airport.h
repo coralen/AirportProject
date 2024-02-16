@@ -10,7 +10,7 @@ typedef struct {
 	int planeCount;
 } Airport;
 
-int isSameAirport(const Airport* pAirport, const Airport* ptrAirport);
+int isSameAirport(const Airport* airportPtr1, const Airport* airportPtr2);
 int isAirportCode(const Airport* pAirport, const char* code);
 int isCodeValid(const char* code);
 void initAirportNoCode(Airport* pAirport);

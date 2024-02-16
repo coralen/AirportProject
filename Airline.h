@@ -19,14 +19,14 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager);
 int addPlane(Airline* pAirline);
 int isPossibleFlight(Airline* pAirline, AirportManager* pAirportManager);
 int allocateFlight(Airline* pAirline, Flight* pFlight);
+int isSamePlane(const Airline* pAirline, const Plane* pPlane);
 void getAirlineName(Airline* pAirline);
 void doPrintFlightsWithPlaneType(Airline* pAirline);
-void getPlaneForFlight(const Airline* pAirline, Flight* pFlight);
+void getPlaneForFlight(const Airline* pAirline, Plane* pPlane);
 void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFlight);
 void printAirline(const Airline* pAirline);
-void printAirportArr(const AirportManager* pAirportManager);
-void printFlightArr(const Airline* pAirline);
-void printPlaneArr(const Airline* pAirline);
+void printFlightsArr(Flight** const flightArr, const int flightCount);
+void printPlanesArr(const Plane* planeArr, const int planeCount);
 void freeCompany(Airline* pAirline);
 Plane* findPlaneBySerialNumber(const Airline* pAirline, const int serielNumber, const int planeCount);
 

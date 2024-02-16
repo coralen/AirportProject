@@ -4,9 +4,9 @@
 #include "AirportManager.h"
 #include "Helper.h"
 
-int initAirportManager(AirportManager* pAirportManager) 
+void initAirportManager(AirportManager* pAirportManager) 
 {
-	pAirportManager->airportCount = 0;
+    pAirportManager->airportCount = 0;
     pAirportManager->airportArr = NULL;
 }
 
@@ -14,7 +14,7 @@ int addAirport(AirportManager* pAirportManager)
 {
     Airport* pAirport = NULL;
 
-    pAirportManager->airportArr = (Airport*)realloc(pAirportManager->airportArr, (pAirportManager->airportCount + 1) * sizeof(Airport));
+    pAirportManager->airportArr = (Airport**)realloc(pAirportManager->airportArr, (pAirportManager->airportCount + 1) * sizeof(Airport*));
     if (!pAirportManager->airportArr) return 0;
     pAirportManager->airportCount++;
     pAirport = pAirportManager->airportArr[pAirportManager->airportCount - 1];
@@ -24,7 +24,7 @@ int addAirport(AirportManager* pAirportManager)
         if (findAirportByCode(pAirportManager, pAirport->code)) printf("This code already in use - enter a different code");
     } while (!findAirportByCode(pAirportManager, pAirport->code));
 
-    initAirportNoCode(pAirport, pAirportManager);
+    initAirportNoCode(pAirport);
 
     return 1;
 }
@@ -32,7 +32,7 @@ int addAirport(AirportManager* pAirportManager)
 Airport* findAirportByCode(const AirportManager* pAirportManager, const char* code) 
 {
     for (int i = 0; i < pAirportManager->airportCount; i++) 
-        if (isSameCode(pAirportManager->airportArr[i]->code, code, IATA)) return pAirportManager->airportArr[i];
+        if (isSameCode(pAirportManager->airportArr[i]->code, code)) return pAirportManager->airportArr[i];
     return NULL;
 }
 
@@ -50,8 +50,14 @@ void printAirportManager(const AirportManager* pAirportManager)
 {
     printf("there are %d airports\n", pAirportManager->airportCount);
     for (int i = 0; i < pAirportManager->airportCount; i++) {
-        printAirport(&(pAirportManager->airportArr[i]));
+        printAirport(pAirportManager->airportArr[i]);
     }
+}
+
+void printAirportArr(Airport** const airportArr, const int airportCount)
+{
+    for (int i = 0; i < airportCount; i++)
+        printAirport(airportArr[i]);
 }
 
 void freeAirportManagar(AirportManager* pAirportManager) 

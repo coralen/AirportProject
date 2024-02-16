@@ -16,9 +16,9 @@ void getCorrectDate(Date* pDate)
 	char date[MAX_STRING];
 	int count, validInputFlag = 0, day = 0, month = 0, year = 0;
 
-	printf("Enter Flight Date dd##mm##yyyy  minimum year 2023");
 	while (!validInputFlag)
 	{
+		printf("Enter Flight Date dd##mm##yyyy  minimum year 2023\n");
 		scanf("%s", date);
 		count = sscanf(date, "%2d##%2d##%4d", &day, &month, &year);
 
@@ -37,13 +37,13 @@ void getCorrectDate(Date* pDate)
 
 void printDate(const Date* pdate)
 {
-	printf("Date is %d-%d-%d\n", pdate->day, pdate->month, pdate->year);
+	printf("Date: %d/%d/%d\n", pdate->day, pdate->month, pdate->year);
 }
 
-/* In progress */
+
 int validateDate(const int day, const int month, const int year)
 {
-	int max_days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // Change to ENUM (?)
+	int max_days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 	if (day < MIN_DAY || day > max_days[month - 1]) return 0;
 	if (month < MIN_MONTH || month > 12 || year <= MIN_YEAR) return 0;
@@ -53,7 +53,5 @@ int validateDate(const int day, const int month, const int year)
 
 void freeDate(Date* pDate)
 {
-	free(pDate->day);
-	free(pDate->month);
-	free(pDate->year);
+	free(pDate);
 }

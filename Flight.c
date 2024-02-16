@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "Flight.h"
 #include "AirportManager.h"
@@ -13,7 +14,7 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 
 	pFlight->plane = *pPlane;
 	printf("there are %d airports", pAirportManager->airportCount);
-	printAirportArr(pAirportManager);
+	printAirportArr(pAirportManager->airportArr, pAirportManager->airportCount);
 
 	// Select origin airport
 	printf("Enter code of origin airport :");
@@ -50,7 +51,7 @@ int isFlightToDestAirport(const Flight* pFlight, const char* dCode)
 	return 0;
 }
 
-int isPlaneTypeInFlight(const Flight* pFlight, const PlaneType type)
+int isPlaneTypeInFlight(const Flight* pFlight, const PlaneType* type)
 {
 	if (pFlight->plane.type == type) return 1;
 	return 0;
