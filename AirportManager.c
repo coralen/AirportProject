@@ -4,10 +4,11 @@
 #include "AirportManager.h"
 #include "Helper.h"
 
-void initAirportManager(AirportManager* pAirportManager) 
+void initManager(AirportManager* pAirportManager)
 {
     pAirportManager->airportCount = 0;
-    pAirportManager->airportArr = NULL;
+    if (!(pAirportManager->airportArr = (Airport**)malloc(sizeof(Airport*)))) return 0;
+    return 1;
 }
 
 int addAirport(AirportManager* pAirportManager)
@@ -60,7 +61,7 @@ void printAirportArr(Airport** const airportArr, const int airportCount)
         printAirport(airportArr[i]);
 }
 
-void freeAirportManagar(AirportManager* pAirportManager)
+void freeManager(AirportManager* pAirportManager)
 {
     for (int i = 0; i < pAirportManager->airportCount; i++) 
         freeAirport(pAirportManager->airportArr[i]);
