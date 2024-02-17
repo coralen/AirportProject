@@ -4,15 +4,19 @@
 #include "AirportManager.h"
 #include "Helper.h"
 
-void initManager(AirportManager* pAirportManager)
+int initManager(AirportManager* pAirportManager) 
 {
+    printf("initManager\n");
+    
     pAirportManager->airportCount = 0;
-    if (!(pAirportManager->airportArr = (Airport**)malloc(sizeof(Airport*)))) return 0;
+    pAirportManager->airportArr = NULL;
     return 1;
 }
 
 int addAirport(AirportManager* pAirportManager)
 {
+    printf("addAirport in manager\n");
+    
     Airport* pAirport = NULL;
 
     pAirportManager->airportArr = (Airport**)realloc(pAirportManager->airportArr, (pAirportManager->airportCount + 1) * sizeof(Airport*));
@@ -20,11 +24,15 @@ int addAirport(AirportManager* pAirportManager)
     pAirportManager->airportCount++;
     pAirport = pAirportManager->airportArr[pAirportManager->airportCount - 1];
 
+printf("almost in do while\n");
+
     do {
         getAirportCode(pAirport->code);
+     //   printf("%s  %d", pAirport->code, 5);
         if (findAirportByCode(pAirportManager, pAirport->code)) printf("This code already in use - enter a different code");
     } while (!findAirportByCode(pAirportManager, pAirport->code));
 
+printf("entering initaiport\n");
     initAirportNoCode(pAirport);
 
     return 1;
@@ -55,10 +63,10 @@ void printAirportManager(const AirportManager* pAirportManager)
     }
 }
 
-void printAirportArr(Airport** const airportArr, const int airportCount)
+void printAirports(const AirportManager* pAirportManager)
 {
-    for (int i = 0; i < airportCount; i++)
-        printAirport(airportArr[i]);
+    for (int i = 0; i < pAirportManager->airportCount; i++)
+        printAirport(pAirportManager->airportArr[i]);
 }
 
 void freeManager(AirportManager* pAirportManager)
