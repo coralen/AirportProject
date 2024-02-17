@@ -161,6 +161,7 @@ void freeCompany(Airline* pAirline)
 	free(pAirline->flightArr);
 	for (int j = 0; j < pAirline->planeCount; j++)
 		freePlane(&pAirline->planeArr[j]);
+	free(pAirline->planeArr);
 	free(pAirline->name);
 }
 
