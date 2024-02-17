@@ -35,8 +35,7 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 
 	if (!isPossibleFlight(pAirline, pAirportManager)) return 0;
 
-	// Allocate memory and add a new flight
-	if (!pAirline->flightArr) return 0;
+	if (!(pAirline->flightArr = (Flight**)realloc(pAirline->flightArr, (pAirline->flightCount + 1) * sizeof(Flight*)))) return 0; // Allocate memory and add a new flight
 
 	pAirline->flightCount++;
 	pFlight = pAirline->flightArr[pAirline->flightCount - 1];
@@ -48,22 +47,13 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 
 int addPlane(Airline* pAirline)
 {
-	Plane* pPlane = (Plane*)malloc(sizeof(Plane));
-	if (!pPlane) return 0;
 
-	if (!initPlane(pPlane, pAirline->planeArr, pAirline->planeCount)) {
-		free(pPlane); // Free if the memory allocation failed
-		return 0;
-	}
+	if (!(pAirline->planeArr = (Plane*)realloc(pAirline->planeArr, (pAirline->planeCount + 1) * sizeof(Plane)))) return 0;
 
-
-	if (isSamePlane(pAirline, pPlane)) return 0;
-
-	pAirline->planeArr = (Plane*)realloc(pAirline->planeArr, (pAirline->planeCount + 1) * sizeof(Plane));
-	if (!pAirline->planeArr) return 0;
-
+	initPlane(&pAirline->planeArr[pAirline->planeCount], pAirline->planeArr, pAirline->planeCount);
 	pAirline->planeCount++;
-	pAirline->planeArr[pAirline->planeCount - 1] = *pPlane;
+
+	if (isSamePlane(pAirline, &pAirline->planeArr[pAirline->planeCount])) return 0;
 
 	return 1;
 }
@@ -166,15 +156,10 @@ void printPlanesArr(const Plane* planeArr, const int planeCount)
 
 void freeCompany(Airline* pAirline)
 {
-	if (pAirline != NULL)
-	{
-		if (pAirline->flightArr != NULL)
-			for (int i = 0; i < pAirline->flightCount; i++)
-				freeFlight(pAirline->flightArr[i]);
-		if (pAirline->planeArr != NULL)
-			for (int j = 0; j < pAirline->planeCount; j++)
-				freePlane(&(pAirline->planeArr[j]));
-		free(pAirline->name);
-	}	
+	for (int i = 0; i < pAirline->flightCount; i++)
+		freeFlight(pAirline->flightArr[i]);
+	for (int j = 0; j < pAirline->planeCount; j++)
+		freePlane(&pAirline->planeArr[j]);
+	free(pAirline->name);
 }
 

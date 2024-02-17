@@ -84,9 +84,6 @@ char* stringPlaneType(const PlaneType* type)
 
 void freePlane(Plane* pPlane)
 {
-	if (pPlane != NULL)
-	{
-		if (pPlane->type != NULL) free(pPlane->type);
-		free(pPlane);
-	}	
+	free(pPlane->type);
+	free(pPlane);	
 }
