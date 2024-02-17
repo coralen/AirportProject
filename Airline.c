@@ -37,7 +37,7 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 
 	if (!(pPlane = (Plane*)malloc(sizeof(Plane)))) return 0; // Allocation did not work
 
-	pPlane = getPlaneForFlight(pAirline, pAirline->flightArr[pAirline->flightCount - 1]);
+	pPlane = getPlaneForFlight(pAirline, pPlane);
 	initFlight(pAirline->flightArr[pAirline->flightCount], pPlane, pAirportManager);
 	pAirline->flightCount++;
 
@@ -51,7 +51,7 @@ int addPlane(Airline* pAirline)
 
 	if (!(pAirline->planeArr = (Plane*)realloc(pAirline->planeArr, (pAirline->planeCount + 1) * sizeof(Plane)))) return 0;
 
-	initPlane(&pAirline->planeArr[pAirline->planeCount], pAirline->planeArr, pAirline->planeCount);
+	if (!(initPlane(&pAirline->planeArr[pAirline->planeCount], pAirline->planeArr, pAirline->planeCount))) return 0;
 
 	if (isSamePlane(pAirline, &pAirline->planeArr[pAirline->planeCount])) return 0;
 	pAirline->planeCount++;
