@@ -22,7 +22,7 @@ int allocateFlight(Airline* pAirline, Flight* pFlight);
 int isSamePlane(const Airline* pAirline, const Plane* pPlane);
 void getAirlineName(Airline* pAirline);
 void doPrintFlightsWithPlaneType(Airline* pAirline);
-void getPlaneForFlight(const Airline* pAirline, Plane* pPlane);
+Plane* getPlaneForFlight(const Airline* pAirline, Plane* pPlane);
 void getSrcAndDstForFlight(const AirportManager* pAirportManager, Flight* pFlight);
 void printAirline(const Airline* pAirline);
 void printFlightsArr(Flight** const flightArr, const int flightCount);
