@@ -102,5 +102,4 @@ void freeAirport(Airport* pAirport)
 {
 	free(pAirport->name);
 	free(pAirport->country);
-	free(pAirport->code)
 }
