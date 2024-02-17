@@ -17,15 +17,15 @@ void getAirportCode(char* code)
 	do {
 		printf("Enter airport code  - 3 UPPER CASE letters  ");
 		scanf("%s", code);
-		printf("\n");
 	} while (!isCodeValid(code));
+    printf("\n HELLO");
 }
 
 void getAirportName(Airport* pAirport)
 {
 	char name[MAX_STRING];
-
-	pAirport->name = NULL;
+printf("aiport name section\n");
+	pAirport->name;
 	printf("Enter airport name\n");
 	scanf("%s", name);
 
