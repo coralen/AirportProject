@@ -44,18 +44,14 @@ void getSerialNumber(Plane* pPlane)
 void getPlaneType(Plane* pPlane)
 {
 	int choice;
-	PlaneType* type = (PlaneType*)malloc(sizeof(PlaneType));
 
 	do {
 		printf("Please enter one of the following types\n0 for Commercial\n1 for Cargo\n2 for Military\n");
 		scanf("%d", &choice);
 	} while (choice < MIN_TYPE || choice > MAX_TYPE);
 
-	*type = (PlaneType)choice;
-	pPlane->type = malloc(sizeof(PlaneType));
-	if (!pPlane->type) return;
-	pPlane->type = type;
-
+	if (!(pPlane->type = (PlaneType*)malloc(sizeof(PlaneType)))) return;
+	*pPlane->type = (PlaneType)choice;
 }
 
 void printPlane(const Plane* pPlane)
