@@ -12,7 +12,6 @@ int initPlane(Plane* pPlane, const Plane* planeArr, const int planeCount);
 int isPlaneExist(Plane* pPlane, const Plane* planeArr, const int planeCount);
 void printPlane(const Plane* pPlane);
 char* stringPlaneType(const PlaneType* type);
-void getSerialNumber(Plane* pPlane);
 void getPlaneType(Plane* pPlane);
 void freePlane(Plane* pPlane);
 

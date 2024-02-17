@@ -17,15 +17,15 @@ void getAirportCode(char* code)
 	do {
 		printf("Enter airport code  - 3 UPPER CASE letters  ");
 		scanf("%s", code);
+		printf("\n");
 	} while (!isCodeValid(code));
-    printf("\n HELLO");
 }
 
 void getAirportName(Airport* pAirport)
 {
 	char name[MAX_STRING];
-printf("aiport name section\n");
-	pAirport->name;
+
+	pAirport->name = NULL;
 	printf("Enter airport name\n");
 	scanf("%s", name);
 
@@ -102,7 +102,13 @@ void printWithUnderscores(const char* input)
 
 void freeAirport(Airport* pAirport) 
 {
-	free(pAirport->name);	
-	free(pAirport->country);
-	free(pAirport);
+	if (pAirport != NULL) {
+		if (pAirport->name != NULL) {
+			free(pAirport->name);
+		}
+		if (pAirport->country != NULL) {
+			free(pAirport->country);
+		}
+		free(pAirport);
+	}
 }

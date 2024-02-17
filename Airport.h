@@ -6,7 +6,8 @@
 typedef struct {
 	char* name;
 	char* country;
-	char code[IATA + 1];
+	char code[
+		+ 1];
 	int planeCount;
 } Airport;
 

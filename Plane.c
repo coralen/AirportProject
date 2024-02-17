@@ -13,13 +13,15 @@
 
 int initPlane(Plane* pPlane, const Plane* planeArr, const int planeCount)
 {
-	char input[MAX_STRING];
+	int serielNumber;
 
 	do {
 		printf("Enter plane serial number - between 1 to 9999\n");
-		scanf("%s", input);
-		sscanf(input, "%d", &pPlane->serielNumber);
-	} while (pPlane->serielNumber && (pPlane->serielNumber < MIN_SERIAL || pPlane->serielNumber > MAX_SERIAL || isPlaneExist(pPlane, planeArr, planeCount)));
+		scanf("%d", &serielNumber);
+		printf("\n\n");
+	} while (serielNumber < MIN_SERIAL || serielNumber > MAX_SERIAL || isPlaneExist(pPlane, planeArr, planeCount));
+
+	pPlane->serielNumber = serielNumber;
 
 	getPlaneType(pPlane);
 	if (!pPlane) return 0; // Allocation did not work
@@ -33,29 +35,18 @@ int isPlaneExist(Plane* pPlane, const Plane* planeArr, const int planeCount)
 	return 0;
 }
 
-void getSerialNumber(Plane* pPlane)
-{
-	do {
-		printf("Enter plane serial number - between 1 to 9999");
-		scanf("%d", &pPlane->serielNumber);
-	} while (pPlane->serielNumber < MIN_SERIAL || pPlane->serielNumber > MAX_SERIAL);
-}
-
 void getPlaneType(Plane* pPlane)
 {
 	int choice;
-	PlaneType* type = (PlaneType*)malloc(sizeof(PlaneType));
 
 	do {
 		printf("Please enter one of the following types\n0 for Commercial\n1 for Cargo\n2 for Military\n");
 		scanf("%d", &choice);
+		printf("\n");
 	} while (choice < MIN_TYPE || choice > MAX_TYPE);
 
-	*type = (PlaneType)choice;
-	pPlane->type = malloc(sizeof(PlaneType));
-	if (!pPlane->type) return;
-	pPlane->type = type;
-
+	if (!(pPlane->type = (PlaneType*)malloc(sizeof(PlaneType)))) return;
+	*pPlane->type = (PlaneType)choice;
 }
 
 void printPlane(const Plane* pPlane)
