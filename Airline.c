@@ -12,13 +12,11 @@ int initAirline(Airline* pAirline)
 {
 	char name[MAX_STRING];
 
-	// Scan airline name
 	printf(" Enter Airline name");
 	scanf(" %[^\n]", &name);
 	printf("\n");
 
-	pAirline->name = (char*)malloc((strlen(name) + 1) * sizeof(char));
-	if (!pAirline->name) return 0; // Allocation did not work
+	if (!(pAirline->name = (char*)malloc((strlen(name) + 1) * sizeof(char)))) return 0;
 	strcpy(pAirline->name, name);
 
 	pAirline->flightCount = 0;
@@ -33,9 +31,10 @@ int addFlight(Airline* pAirline, AirportManager* pAirportManager)
 	Plane* pPlane = NULL;
 
 	if (!isPossibleFlight(pAirline, pAirportManager)) return 0;
-	if (!(pAirline->flightArr = (Flight**)realloc(pAirline->flightArr, (pAirline->flightCount + 1) * sizeof(Flight*)))) return 0; // Allocation did not work
 
-	if (!(pPlane = (Plane*)malloc(sizeof(Plane)))) return 0; // Allocation did not work
+	if (!(pAirline->flightArr = (Flight**)realloc(pAirline->flightArr, (pAirline->flightCount + 1) * sizeof(Flight*)))) return 0;
+	if (!(pAirline->flightArr[pAirline->flightCount] = (Flight*)malloc(sizeof(Flight)))) return 0;
+	if (!(pPlane = (Plane*)malloc(sizeof(Plane)))) return 0; 
 
 	pPlane = getPlaneForFlight(pAirline, pPlane);
 	initFlight(pAirline->flightArr[pAirline->flightCount], pPlane, pAirportManager);

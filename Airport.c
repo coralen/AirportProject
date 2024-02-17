@@ -14,23 +14,23 @@ void initAirportNoCode(Airport* pAirport)
 
 void getAirportCode(char* code)
 {
+	char inCode[MAX_STRING];
 	do {
 		printf("Enter airport code  - 3 UPPER CASE letters  ");
-		scanf("%s", code);
-		printf("\n");
-	} while (!isCodeValid(code));
+		scanf(" %[^\n]", &inCode);
+	} while (!isCodeValid(inCode));
+
+	code = inCode;
 }
 
 void getAirportName(Airport* pAirport)
 {
 	char name[MAX_STRING];
 
-	pAirport->name = NULL;
 	printf("Enter airport name\n");
-	scanf("%s", name);
+	scanf(" %[^\n]", name);
 
-	pAirport->name = (char*)realloc(pAirport->name, (strlen(name) + 1) * sizeof(char));
-	if (!pAirport->name) return; // Allocation did not work
+	if (!(pAirport->name = (char*)malloc((strlen(name) + 1) * sizeof(char)))) return; 
 	strcpy(pAirport->name, name);
 }
 
@@ -42,15 +42,13 @@ void getAirportCountry(Airport* pAirport)
 	printf("Enter airport country	");
 	scanf("%s", country);
 
-	pAirport->country = (char*)realloc(pAirport->name, (strlen(country) + 1) * sizeof(char));
-	if (!pAirport->country) return; // Allocation did not work
+	if (!(pAirport->country = (char*)malloc((strlen(country) + 1) * sizeof(char)))) return;
 
 	strcpy(pAirport->country, country);
 }
 
 int isCodeValid(const char* code)
 {
-
 	if (strlen(code) != IATA)
 	{
 		printf("code should be 3 letters\n");
@@ -102,13 +100,7 @@ void printWithUnderscores(const char* input)
 
 void freeAirport(Airport* pAirport) 
 {
-	if (pAirport != NULL) {
-		if (pAirport->name != NULL) {
-			free(pAirport->name);
-		}
-		if (pAirport->country != NULL) {
-			free(pAirport->country);
-		}
-		free(pAirport);
-	}
+	free(pAirport->name);
+	free(pAirport->country);
+	free(pAirport);
 }

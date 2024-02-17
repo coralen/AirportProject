@@ -13,19 +13,18 @@
 
 int addAirport(AirportManager* pAirportManager)
 {
-    Airport* pAirport = NULL;
 
-    pAirportManager->airportArr = (Airport**)realloc(pAirportManager->airportArr, (pAirportManager->airportCount + 1) * sizeof(Airport*));
-    if (!pAirportManager->airportArr) return 0;
-    pAirportManager->airportCount++;
-    pAirport = pAirportManager->airportArr[pAirportManager->airportCount - 1];
+    if (!(pAirportManager->airportArr = (Airport**)realloc(pAirportManager->airportArr, (pAirportManager->airportCount + 1) * sizeof(Airport*)))) return 0;
+    if (!(pAirportManager->airportArr[pAirportManager->airportCount] = (Airport*)malloc(sizeof(Airport)))) return 0;
 
     do {
-        getAirportCode(pAirport->code);
-        if (findAirportByCode(pAirportManager, pAirport->code)) printf("This code already in use - enter a different code");
-    } while (!findAirportByCode(pAirportManager, pAirport->code));
+        getAirportCode(pAirportManager->airportArr[pAirportManager->airportCount]->code);
+        if (findAirportByCode(pAirportManager, pAirportManager->airportArr[pAirportManager->airportCount]->code)) 
+            printf("This code already in use - enter a different code");
+    } while (findAirportByCode(pAirportManager, pAirportManager->airportArr[pAirportManager->airportCount]->code));
 
-    initAirportNoCode(pAirport);
+    initAirportNoCode(pAirportManager->airportArr[pAirportManager->airportCount]);
+    pAirportManager->airportCount++;
 
     return 1;
 }
