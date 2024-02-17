@@ -14,7 +14,7 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 
 	pFlight->plane = *pPlane;
 	printf("there are %d airports", pAirportManager->airportCount);
-	printAirportArr(pAirportManager->airportArr, pAirportManager->airportCount);
+	printAirports(pAirportManager);
 
 	// Select origin airport
 	printf("Enter code of origin airport :");
