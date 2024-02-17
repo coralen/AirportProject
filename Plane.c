@@ -51,7 +51,20 @@ void getPlaneType(Plane* pPlane)
 	} while (choice < MIN_TYPE || choice > MAX_TYPE);
 
 	if (!(pPlane->type = (PlaneType*)malloc(sizeof(PlaneType)))) return;
-	*pPlane->type = (PlaneType)choice;
+	
+	// Convert the integer choice to PlaneType enum value
+	switch (choice) {
+	case 0:
+		*pPlane->type = COMMERCIAL;
+		break;
+	case 1:
+		*pPlane->type = CARGO;
+		break;
+	case 2:
+		*pPlane->type = MILITARY;
+		break;
+
+	}
 }
 
 void printPlane(const Plane* pPlane)
