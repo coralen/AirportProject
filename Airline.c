@@ -157,7 +157,7 @@ void printPlanesArr(const Plane* planeArr, const int planeCount)
 void freeCompany(Airline* pAirline)
 {
 	for (int i = 0; i < pAirline->flightCount; i++)
-		freeFlight(pAirline->flightArr[I]);
+		freeFlight(pAirline->flightArr[i]);
 	free(pAirline->flightArr);
 	for (int j = 0; j < pAirline->planeCount; j++)
 		freePlane(&pAirline->planeArr[j]);
