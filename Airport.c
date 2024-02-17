@@ -102,13 +102,7 @@ void printWithUnderscores(const char* input)
 
 void freeAirport(Airport* pAirport) 
 {
-	if (pAirport != NULL) {
-		if (pAirport->name != NULL) {
-			free(pAirport->name);
-		}
-		if (pAirport->country != NULL) {
-			free(pAirport->country);
-		}
-		free(pAirport);
-	}
+	free(pAirport->name);	
+	free(pAirport->country);
+	free(pAirport);
 }
