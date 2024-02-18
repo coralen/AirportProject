@@ -31,15 +31,33 @@ int main()
 		switch (choice)
 		{
 		case 0:
-			addAirport(&manager);
+			if (!addAirport(&manager))
+			{
+				printf("Error\n");
+				freeManager(&manager);
+				freeCompany(&company);
+				return 0;
+			}
 			break;
 
 		case 1:
-			addPlane(&company);
+			if (!addPlane(&company))
+			{
+				printf("Error\n");
+				freeManager(&manager);
+				freeCompany(&company);
+				return 0;
+			}
 			break;
 
 		case 2:
-			addFlight(&company, &manager);
+			if (!addFlight(&company, &manager))
+			{
+				printf("Error\n");
+				freeManager(&manager);
+				freeCompany(&company);
+				return 0;
+			}
 			break;
 
 		case 3:
@@ -55,4 +73,7 @@ int main()
 			break;
 		}
 	} while (choice != -1);
+
+	freeCompany(&company);
+	freeManager(&manager);
 }
