@@ -18,8 +18,9 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 	//printAirports(pAirportManager);
 
 	// Select origin airport
-	printf("Enter code of origin airport:");
+	
 	do {
+		printf("Enter code of origin airport:");
 		scanf("%s", &code);
 		printf("\n");
 		if (findAirportByCode(pAirportManager, code)) validSrc = 1;
@@ -28,10 +29,10 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 	strcpy(pFlight->sCode, code);
 
 	// Select destination airport
-	// coral: there is a problem here. it accepts bad codes.
 	do {
 		printf("Enter code of destination airport:");
 		scanf("%s", &code);
+		printf("\n");
 		if (isFlightFromSourceAirport(pFlight, code)) printf("Same origin and destination airport\n");
 		else {
 			if (findAirportByCode(pAirportManager, code)) validDst = 1;

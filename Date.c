@@ -37,7 +37,7 @@ void getCorrectDate(Date* pDate)
 
 void printDate(const Date* pdate)
 {
-	printf("Date: %d/%d/%d", pdate->day, pdate->month, pdate->year);
+	printf("%d/%d/%d", pdate->day, pdate->month, pdate->year);
 }
 
 
