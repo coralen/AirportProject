@@ -34,7 +34,7 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 		scanf("%s", &code);
 		if (isFlightFromSourceAirport(pFlight, code)) printf("Same origin and destination airport\n");
 		else {
-			if (!findAirportByCode(pAirportManager, pFlight->dCode)) validDst = 1;
+			if (findAirportByCode(pAirportManager, code)) validDst = 1;
 			else printf("No airport with this code - try again\n");
 		}
 	} while (!validDst);
