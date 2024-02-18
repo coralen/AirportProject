@@ -11,29 +11,34 @@
 void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAirportManager) 
 {
 	int validSrc = 0, validDst = 0;
+	char code[MAX_STRING];
 
 	pFlight->plane = *pPlane;
-	printf("there are %d airports", pAirportManager->airportCount);
-	printAirports(pAirportManager);
+	//printf("there are %d airports\n", pAirportManager->airportCount);
+	//printAirports(pAirportManager);
 
 	// Select origin airport
-	printf("Enter code of origin airport :");
+	printf("Enter code of origin airport:");
 	do {
-		scanf("%s", pFlight->sCode);
-		if (findAirportByCode(pAirportManager, pFlight->sCode) != NULL) validSrc = 1;
-		else printf("No airport with this code - try again");
+		scanf("%s", &code);
+		printf("\n");
+		if (findAirportByCode(pAirportManager, code)) validSrc = 1;
+		else printf("No airport with this code - try again\n");
 	} while (!validSrc);
+	strcpy(pFlight->sCode, code);
 
 	// Select destination airport
+	// coral: there is a problem here. it accepts bad codes.
 	do {
-		printf("Enter code of destination airport :");
-		scanf("%d", pFlight->dCode);
-		if (isFlightFromSourceAirport(pFlight, pFlight->dCode)) printf("Same origin and destination airport\n");
+		printf("Enter code of destination airport:");
+		scanf("%s", &code);
+		if (isFlightFromSourceAirport(pFlight, code)) printf("Same origin and destination airport\n");
 		else {
-			if (findAirportByCode(pAirportManager, pFlight->dCode) != NULL) validDst = 1;
-			else printf("No airport with this code - try again");
+			if (!findAirportByCode(pAirportManager, pFlight->dCode)) validDst = 1;
+			else printf("No airport with this code - try again\n");
 		}
 	} while (!validDst);
+	strcpy(pFlight->dCode, code);
 
 	getCorrectDate(&pFlight->date);
 
@@ -41,7 +46,7 @@ void initFlight(Flight* pFlight, const Plane* pPlane, const AirportManager* pAir
 
 int isFlightFromSourceAirport(const Flight* pFlight, const char* sCode)
 {
-	if (strcmp(pFlight->sCode ,sCode)) return 1;
+	if (!strcmp(pFlight->sCode ,sCode)) return 1;
 	return 0;
 }
 
@@ -61,6 +66,7 @@ void printFlight(const Flight* pFlight)
 {
 	printf("Flight From %s To %s  Date: ", pFlight->sCode, pFlight->dCode);
 	printDate(&pFlight->date);
+	printf(" ");
 	printPlane(&pFlight->plane);
 	printf("\n");
 }

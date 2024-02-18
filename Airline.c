@@ -16,6 +16,7 @@ int initAirline(Airline* pAirline)
 	scanf(" %[^\n]", &name);
 	printf("\n");
 
+
 	if (!(pAirline->name = (char*)malloc((strlen(name) + 1) * sizeof(char)))) return 0;
 	strcpy(pAirline->name, name);
 

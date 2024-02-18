@@ -20,7 +20,8 @@ void getAirportCode(char* code)
 		scanf(" %[^\n]", &inCode);
 	} while (!isCodeValid(inCode));
 
-	code = inCode;
+	printf("\n");
+	strcpy(code, inCode);
 }
 
 void getAirportName(Airport* pAirport)
@@ -44,6 +45,7 @@ void getAirportCountry(Airport* pAirport)
 
 	if (!(pAirport->country = (char*)malloc((strlen(country) + 1) * sizeof(char)))) return;
 
+	printf("\n");
 	strcpy(pAirport->country, country);
 }
 
@@ -84,9 +86,9 @@ void printAirport(const Airport* pAirport)
 	printf("Airport name:");
 	printWithUnderscores((const char*)pAirport->name);
 
-	printf("A                  Country: %s", pAirport->country);
-
-	printf("                 Code:%c%c%c", pAirport->code[0], pAirport->code[1], pAirport->code[2]);
+	printf("                 Country: %s", pAirport->country);
+	printf("                 Code:%s", pAirport->code);
+	printf("\n");
 }
 
 void printWithUnderscores(const char* input)
